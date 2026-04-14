@@ -1,5 +1,6 @@
 import app from './src/app.js';
 
+import companiesRoutes from './src/routes/companiesRoutes.js';
 import authenticationsRoutes from './src/routes/authenticationsRoutes.js';
 import 'dotenv/config';
 
@@ -12,3 +13,4 @@ app.listen(port, host, () => {
 
 // Lalu di bagian bawah tempat Tuan memanggil app.use('/users', ...), tambahkan:
 app.use('/authentications', authenticationsRoutes);
+app.use('/companies', companiesRoutes);
