@@ -8,7 +8,6 @@
     "migrate": "node-pg-migrate up",
     "migrate:create": "node-pg-migrate create"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",

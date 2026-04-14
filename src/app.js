@@ -1,5 +1,7 @@
+// app.js
 import express from 'express';
-import { errorHandler } from './middlewares/errorHandler';
+import { errorHandler } from './middlewares/errorHandler.js';
+import usersRoute from './routes/usersRoutes.js';
 
 const app = express();
 
@@ -12,6 +14,7 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('/users', usersRoute);
 // Nanti kita akan tambahkan Error Handling Middleware di sini...
 // 
 

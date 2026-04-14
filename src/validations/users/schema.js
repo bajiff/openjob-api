@@ -2,7 +2,7 @@
 import Joi from 'joi';
 
 export const UserPayloadSchema = Joi.object({
-  fullname: Joi.string().required(),
-  email: Joi.string().email().required(),
+  name: Joi.string().required(),          email: Joi.string().email().required(),
   password: Joi.string().required(),
+  role: Joi.string().optional()          
 });

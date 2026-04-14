@@ -1,9 +1,7 @@
 import pg from 'pg';
-import 'dotenv/config'; // Mantra modern untuk membaca file .env
-
+import 'dotenv/config'; 
 const { Pool } = pg;
 
-// Membuat armada truk (Connection Pool) berdasarkan kredensial di .env
 const pool = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
@@ -12,7 +10,6 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
-// Test koneksi (Opsional, untuk memastikan jalan tidak terputus)
 pool.connect((err, client, release) => {
   if (err) {
     return console.error('Truk gagal masuk gudang! Cek kredensial database:', err.stack);
@@ -21,4 +18,4 @@ pool.connect((err, client, release) => {
   release();
 });
 
-export default pool; // Mengekspor Pool agar bisa dipakai Koki (Services)
+export default pool;

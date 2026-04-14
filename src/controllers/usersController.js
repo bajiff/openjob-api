@@ -1,24 +1,44 @@
 // src/controllers/usersController.js
 import { addUser } from '../services/usersService.js';
+import { getUserById } from '../services/usersService.js';
 
 export const registerUser = async (req, res, next) => {
   try {
-    // 1. Ambil data dari pelanggan (sudah dijamin aman oleh Joi)
-    const { fullname, email, password } = req.body;
+    // 1. Ambil 'name' dan 'role' (sesuaikan dengan Postman)
+    const { name, email, password, role } = req.body;
 
-    // 2. Berikan ke Koki Utama (Service)
-    const userId = await addUser({ fullname, email, password });
+    // 2. Berikan ke Koki
+    const userId = await addUser({ name, email, password, role });
 
-    // 3. Kembalikan makanan (respons) yang sudah jadi ke Pelanggan
+    // 3. Kembalikan respons sesuai format yang diminta script Postman
     res.status(201).json({
       status: 'success',
       message: 'User berhasil didaftarkan',
       data: {
-        userId,
+        id: userId, // <-- PERUBAHAN PENTING: Postman mencari 'id'
       },
     });
   } catch (error) {
-    // Jika Koki teriak ada masalah (misal email ganda), panggil Petugas P3K
     next(error);
+  }
+};
+// 2. Tambahkan fungsi baru ini di bawah registerUser:
+export const getUserByIdHandler = async (req, res, next) => {
+  try {
+    // Ambil ID dari URL (req.params)
+    const { id } = req.params;
+
+    // Suruh Koki mengambil data user
+    const user = await getUserById(id);
+
+    // Hidangkan ke Postman dengan status 200 OK
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    next(error); // Lempar ke Petugas P3K jika error (misal 404 tadi)
   }
 };
