@@ -47,3 +47,33 @@ export const getUserById = async (id) => {
   // Kembalikan data user
   return result.rows[0];
 };
+
+export const verifyUserCredential = async (email, password) => {
+  // 1. Cari user berdasarkan email
+  const query = {
+    text: 'SELECT id, password FROM users WHERE email = $1',
+    values: [email],
+  };
+  const result = await pool.query(query);
+
+  // 2. Jika email tidak ditemukan
+  if (result.rowCount === 0) {
+    const error = new Error('Kredensial yang Anda berikan salah');
+    error.statusCode = 401; // 401 = Unauthorized
+    throw error;
+  }
+
+  // 3. Jika email ada, cocokkan password-nya dengan bcrypt
+  const { id, password: hashedPassword } = result.rows[0];
+  const match = await bcrypt.compare(password, hashedPassword);
+
+  // 4. Jika password salah
+  if (!match) {
+    const error = new Error('Kredensial yang Anda berikan salah');
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // 5. Jika lolos semua, kembalikan ID user
+  return id;
+};
